@@ -144,7 +144,7 @@ plane_count = 196
 height = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.15046, 1.66793)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.610054, 1.66793)
 script = ExtResource("3_w7p3u")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]

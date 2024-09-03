@@ -17,7 +17,7 @@ varying vec3 normal;
 
 vec4 noise(vec2 uv)
 {
-	return vec4(vec2(sin(uv.x), sin(uv.y)) / 4., cos(uv.x), cos(-uv.y));
+	return vec4(vec2(sin(uv.x), sin(uv.y)) / 4. + vec2(0.12), cos(uv.x), cos(-uv.y));
 }
 
 void vertex() {
