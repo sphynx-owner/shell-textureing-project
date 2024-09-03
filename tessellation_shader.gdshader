@@ -37,11 +37,5 @@ void fragment() {
 		discard;
 	float grass_brightness = pow(height, 2);
 	NORMAL_MAP = vec3(normalize(-vec2(noise_result.z, -noise_result.w)), 0);
-	ALBEDO = vec3(grass_brightness + 0.01) * color;//vec3(height);//
-	ROUGHNESS = 1.;
+	ALBEDO = vec3(grass_brightness + 0.01) * color;
 }
-
-//void light() {
-	// Called for every pixel for every light affecting the material.
-	// Uncomment to replace the default light processing function with this one.
-//}
