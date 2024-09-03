@@ -1,0 +1,159 @@
+[gd_scene load_steps=38 format=3 uid="uid://clfvi33ssncfl"]
+
+[ext_resource type="Script" path="res://mesh_instance_3d.gd" id="1_akb70"]
+[ext_resource type="Shader" path="res://tessellation_shader.gdshader" id="1_c4c0i"]
+[ext_resource type="Script" path="res://camera.gd" id="3_w7p3u"]
+[ext_resource type="Resource" uid="uid://cslvcweyejh3c" path="res://addons/SphynxMotionBlurToolkit/PreBlurProcessing/default_camera_movement_component.tres" id="3_wjt4y"]
+[ext_resource type="Resource" uid="uid://iru8ynu04i00" path="res://addons/SphynxMotionBlurToolkit/PreBlurProcessing/default_camera_rotation_component.tres" id="4_r720h"]
+[ext_resource type="Resource" uid="uid://rp3mpjmisoyh" path="res://addons/SphynxMotionBlurToolkit/PreBlurProcessing/default_object_movement_component.tres" id="5_f614r"]
+[ext_resource type="Resource" uid="uid://c8ulad7utgrg7" path="res://addons/SphynxMotionBlurToolkit/PreBlurProcessing/pre_blur_processing_stage.tres" id="6_ce6db"]
+[ext_resource type="Script" path="res://addons/SphynxMotionBlurToolkit/PreBlurProcessing/pre_blur_processor.gd" id="7_x4ttc"]
+[ext_resource type="Resource" uid="uid://ca45noqewsyvp" path="res://addons/SphynxMotionBlurToolkit/Guertin/guertin_experimental_blur_stage.tres" id="8_lyucm"]
+[ext_resource type="Resource" uid="uid://cvb65hfs2lrxo" path="res://addons/SphynxMotionBlurToolkit/Guertin/guertin_neighbor_max_stage.tres" id="9_0e303"]
+[ext_resource type="Resource" uid="uid://bidsfymvdyhek" path="res://addons/SphynxMotionBlurToolkit/Guertin/guertin_overlay_stage.tres" id="10_xjwwl"]
+[ext_resource type="Script" path="res://addons/SphynxMotionBlurToolkit/Guertin/new_guertin_motion_blur.gd" id="11_cbstu"]
+[ext_resource type="Resource" uid="uid://dipvwksvqb3dm" path="res://addons/SphynxMotionBlurToolkit/Guertin/guertin_tile_max_x_stage.tres" id="12_1hhsb"]
+[ext_resource type="Resource" uid="uid://bxfg45ubc2pv7" path="res://addons/SphynxMotionBlurToolkit/Guertin/guertin_tile_max_y_stage.tres" id="13_dypfg"]
+[ext_resource type="Resource" uid="uid://bqehecsdgt70s" path="res://addons/SphynxMotionBlurToolkit/Guertin/guertin_tile_variance_stage.tres" id="14_k84cx"]
+[ext_resource type="Script" path="res://addons/SphynxMotionBlurToolkit/BaseClasses/mb_compositor.gd" id="15_uw4sx"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_y3gvr"]
+size = Vector2(10, 10)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hpk8a"]
+seed = 1
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pdj1m"]
+seamless = true
+noise = SubResource("FastNoiseLite_hpk8a")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_m8ekt"]
+frequency = 0.05
+domain_warp_amplitude = 100.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_d4a4i"]
+seamless = true
+noise = SubResource("FastNoiseLite_m8ekt")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4fdeo"]
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_ohbb6"]
+seamless = true
+noise = SubResource("FastNoiseLite_4fdeo")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ak6sp"]
+seed = 1
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_rliw7"]
+seamless = true
+noise = SubResource("FastNoiseLite_ak6sp")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pysjr"]
+render_priority = -97
+shader = ExtResource("1_c4c0i")
+shader_parameter/height = 0.0
+shader_parameter/color = Color(0.401051, 0.744812, 0.378409, 1)
+shader_parameter/wind_noise_x = SubResource("NoiseTexture3D_ohbb6")
+shader_parameter/wind_noise_y = SubResource("NoiseTexture3D_rliw7")
+shader_parameter/domain_warp_noise_x = SubResource("NoiseTexture2D_pdj1m")
+shader_parameter/domain_warp_noise_y = SubResource("NoiseTexture2D_d4a4i")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5qrhf"]
+size = Vector2(10, 10)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a8spk"]
+frequency = 0.23
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_v1ftw"]
+seamless = true
+noise = SubResource("FastNoiseLite_a8spk")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p3bvv"]
+seamless = true
+noise = SubResource("FastNoiseLite_a8spk")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d4jsi"]
+albedo_color = Color(0.225023, 0.141562, 0.0585511, 1)
+albedo_texture = SubResource("NoiseTexture2D_v1ftw")
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_p3bvv")
+uv1_scale = Vector3(10, 10, 10)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_udek4"]
+
+[sub_resource type="Sky" id="Sky_coqio"]
+sky_material = SubResource("ProceduralSkyMaterial_udek4")
+
+[sub_resource type="Environment" id="Environment_8ytmp"]
+background_mode = 2
+sky = SubResource("Sky_coqio")
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_rd8wx"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("7_x4ttc")
+pre_blur_processor_stage = ExtResource("6_ce6db")
+camera_rotation_component = ExtResource("4_r720h")
+camera_movement_component = ExtResource("3_wjt4y")
+object_movement_component = ExtResource("5_f614r")
+debug = false
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_7n3u2"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("11_cbstu")
+blur_stage = ExtResource("8_lyucm")
+overlay_stage = ExtResource("10_xjwwl")
+tile_max_x_stage = ExtResource("12_1hhsb")
+tile_max_y_stage = ExtResource("13_dypfg")
+neighbor_max_stage = ExtResource("9_0e303")
+tile_variance_stage = ExtResource("14_k84cx")
+tile_size = 40
+linear_falloff_slope = 1.0
+importance_bias = 40.0
+maximum_jitter_value = 0.95
+minimum_user_threshold = 1.5
+debug = false
+
+[sub_resource type="Compositor" id="Compositor_44rlm"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_rd8wx"), SubResource("CompositorEffect_7n3u2")])
+script = ExtResource("15_uw4sx")
+samples = 16
+intensity = 1.0
+center_fade = 0.0
+framerate_independent = true
+uncapped_independence = false
+target_constant_framerate = 30.0
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_y3gvr")
+surface_material_override/0 = SubResource("ShaderMaterial_pysjr")
+script = ExtResource("1_akb70")
+plane_count = 196
+height = 0.2
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.15046, 1.66793)
+script = ExtResource("3_w7p3u")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_5qrhf")
+surface_material_override/0 = SubResource("StandardMaterial3D_d4jsi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.646989, -0.535125, 0.543181, -4.87787e-08, 0.712369, 0.701805, -0.762499, -0.45406, 0.460895, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8ytmp")
+compositor = SubResource("Compositor_44rlm")
