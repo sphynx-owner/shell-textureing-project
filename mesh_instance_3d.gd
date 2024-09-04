@@ -41,4 +41,4 @@ func update_tessellation():
 		add_child(new_plane)
 		new_plane.position.y = height / float(plane_count) * (i + 1)
 		new_plane.get_surface_override_material(0).render_priority = i - 96
-		new_plane.get_surface_override_material(0).set_shader_parameter("height", 1. / float(plane_count) * (i + 1))
+		new_plane.get_surface_override_material(0).set_shader_parameter("height", 1. / float(plane_count) * (float(i) + 1.))

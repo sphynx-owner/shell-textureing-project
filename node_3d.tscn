@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://clfvi33ssncfl"]
+[gd_scene load_steps=41 format=3 uid="uid://clfvi33ssncfl"]
 
 [ext_resource type="Script" path="res://mesh_instance_3d.gd" id="1_akb70"]
 [ext_resource type="Shader" path="res://tessellation_shader.gdshader" id="1_c4c0i"]
@@ -36,6 +36,16 @@ domain_warp_amplitude = 100.0
 seamless = true
 noise = SubResource("FastNoiseLite_m8ekt")
 
+[sub_resource type="Gradient" id="Gradient_i7857"]
+offsets = PackedFloat32Array(0.231818, 0.495455)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gj6pg"]
+frequency = 0.196
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_aqcn3"]
+color_ramp = SubResource("Gradient_i7857")
+noise = SubResource("FastNoiseLite_gj6pg")
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4fdeo"]
 
 [sub_resource type="NoiseTexture3D" id="NoiseTexture3D_ohbb6"]
@@ -58,6 +68,7 @@ shader_parameter/wind_noise_x = SubResource("NoiseTexture3D_ohbb6")
 shader_parameter/wind_noise_y = SubResource("NoiseTexture3D_rliw7")
 shader_parameter/domain_warp_noise_x = SubResource("NoiseTexture2D_pdj1m")
 shader_parameter/domain_warp_noise_y = SubResource("NoiseTexture2D_d4a4i")
+shader_parameter/height_noise = SubResource("NoiseTexture2D_aqcn3")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_5qrhf"]
 size = Vector2(10, 10)
@@ -141,7 +152,7 @@ mesh = SubResource("PlaneMesh_y3gvr")
 surface_material_override/0 = SubResource("ShaderMaterial_pysjr")
 script = ExtResource("1_akb70")
 plane_count = 196
-height = 0.2
+height = 0.3
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.610054, 1.66793)
